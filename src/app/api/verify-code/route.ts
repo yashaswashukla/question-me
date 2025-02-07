@@ -32,19 +32,18 @@ export async function POST(req: Request) {
       return Response.json(
         {
           success: "false",
-          messsage: "Incorrect Code",
-        },
-        { status: 400 }
-      );
-    } else {
-      return Response.json(
-        {
-          success: "false",
-          message: "Verification code expired, please signup again",
+          message: "Incorrect Code",
         },
         { status: 400 }
       );
     }
+    return Response.json(
+      {
+        success: "false",
+        message: "Verification code expired, please signup again",
+      },
+      { status: 400 }
+    );
   } catch (error) {
     console.log("Error verifying user", error);
 
