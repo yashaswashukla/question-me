@@ -18,23 +18,24 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req): Promise<any> {
+      async authorize(credentials): Promise<any> {
+        console.log("Helloooo");
         if (!credentials) {
           throw new Error("Enter some values");
         }
         await dbConnect();
-
         try {
+          console.log("Hello");
           const user = await UserModel.findOne({
-            $or: [
-              { email: credentials.email },
-              { username: credentials.username },
-            ],
+            email: credentials.identifier,
           });
-
+          console.log(credentials);
+          console.log("Helo");
           if (!user) {
             throw new Error("No user found with email");
           }
+          console.log("This");
+          console.log(user);
 
           if (!user.isVerified) {
             throw new Error("Please verify your account before login");
@@ -44,11 +45,12 @@ export const authOptions: NextAuthOptions = {
             credentials.password,
             user.password
           );
-
+          console.log(isPasswordCorrect);
           if (isPasswordCorrect) {
             return user;
+          } else {
+            throw new Error("Incorrect password");
           }
-          throw new Error("Incorrect password");
         } catch (error: any) {
           throw new Error(error);
         }
@@ -63,6 +65,15 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token._id = user._id?.toString();
+        token.isVerified = user.isVerified;
+        token.isAcceptingMessage = user.isAcceptingMessage;
+        token.username = user.username;
+      }
+      return token;
+    },
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id;
@@ -71,16 +82,6 @@ export const authOptions: NextAuthOptions = {
         session.user.username = token.username;
       }
       return session;
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token._id = user._id?.toString();
-        token.isVerified = user.isVerified;
-        token.isAcceptingMessage = user.isAcceptingMessage;
-        token.username = user.username;
-      }
-
-      return token;
     },
   },
 };
