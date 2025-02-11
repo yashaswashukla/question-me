@@ -42,7 +42,23 @@ export default function Home() {
     defaultValues: { code: "" },
   });
 
-  const resendVerificationEmail = () => {};
+  const resendVerificationEmail = async () => {
+    try {
+      const response = await axios.put(`/api/resend-email`, {
+        username: params.username,
+      });
+      toast({ title: "Verification email Resent" });
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      const errorMessage = axiosError.response?.data.message;
+      console.log(errorMessage);
+      toast({
+        title: "Error sending verification email",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    }
+  };
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
     try {
       const response = await axios.post(`/api/verify-code`, {
@@ -106,7 +122,11 @@ export default function Home() {
               Submit
             </Button>
             {resendEmail && (
-              <Button onClick={resendVerificationEmail} className="w-full">
+              <Button
+                type="button"
+                onClick={resendVerificationEmail}
+                className="w-full"
+              >
                 Resend Email
               </Button>
             )}

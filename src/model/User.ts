@@ -26,6 +26,7 @@ export interface User extends Document {
   isVerified: boolean;
   isAcceptingMessage: boolean;
   messages: Message[];
+  messageUrl: string;
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -63,6 +64,11 @@ const UserSchema: Schema<User> = new Schema({
   },
   messages: {
     type: [MessageSchema],
+  },
+  messageUrl: {
+    type: String,
+    unique: true,
+    required: true,
   },
 });
 

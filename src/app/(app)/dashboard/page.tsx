@@ -114,9 +114,9 @@ export default function Home() {
     return <div>Please Login</div>;
   }
 
-  const { username } = session.user as User;
+  const { messageUrl } = session.user as User;
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
+  const profileUrl = `${baseUrl}/u/${messageUrl}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
@@ -166,7 +166,7 @@ export default function Home() {
       </Button>
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
         {messages.length > 0 ? (
-          messages.map((message, index) => {
+          messages.map((message) => {
             return (
               <MessageCard
                 key={message._id as string}

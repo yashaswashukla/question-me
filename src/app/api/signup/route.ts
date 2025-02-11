@@ -44,6 +44,7 @@ export async function POST(req: Request) {
       const hashedPassword = await bcrypt.hash(password, 10);
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
+      const messageUrl = await bcrypt.hash(username, 10);
 
       const newUser = new UserModel({
         username,
@@ -54,6 +55,7 @@ export async function POST(req: Request) {
         isVerified: false,
         isAcceptingMessage: true,
         messages: [],
+        messageUrl,
       });
 
       await newUser.save();
