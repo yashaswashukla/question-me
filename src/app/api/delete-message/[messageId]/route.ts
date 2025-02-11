@@ -2,6 +2,8 @@ import dbConnect from "@/lib/dbConnect";
 import { getServerSession, User } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import UserModel from "@/model/User";
+import { AxiosError } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
 
 export default async function DELETE(
   req: Request,
@@ -36,5 +38,11 @@ export default async function DELETE(
       { success: true, message: "Message Deleted" },
       { status: 201 }
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error deleting message", error);
+    return Response.json(
+      { success: "false", message: "Error occured while deleting message" },
+      { status: 500 }
+    );
+  }
 }
