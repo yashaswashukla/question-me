@@ -21,6 +21,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { LabelInput } from "@/components/ui/form-input";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -107,94 +110,136 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">
-            Join Question Me
-          </h1>
-          <p className="mb-4">Sign up to start your anonymous adventure</p>
-        </div>
+    <main className="h-screen overflow-y-hidden w-full dark:bg-black bg-white dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
+      <div>
+        <h1 className="text-3xl sm:text-5xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b dark:from-neutral-200 dark:to-neutral-500 from-stone-950 to-stone-500 py-4 mb-10">
+          Join Question Me
+        </h1>
+        <div className="flex justify-center items-center bg-gray-100 dark:bg-black">
+          <div className="w-full max-w-md mx-auto md:rounded-2xl p-4 md:px-8 md:pb-8 md:pt-4 shadow-input bg-white dark:bg-zinc-950 pt-2">
+            <div className="text-center">
+              <p className="font-semibold relative z-20 bg-clip-text text-transparent bg-gradient-to-b dark:from-neutral-200 dark:to-neutral-500 from-stone-950 to-stone-500 mb-8">
+                Sign up to start your anonymous adventure
+              </p>
+            </div>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              name="username"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="johndoe"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        debouncedUsername(e.target.value);
-                      }}
-                    />
-                  </FormControl>
-                  {isCheckingUsername && <Loader2 className="animate-spin" />}
-                  <p
-                    className={`text-sm ${usernameMessage === "Username is unique" ? "text-green-500" : "text-red-500"}`}
-                  >
-                    test {usernameMessage}
-                  </p>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="johndoe@xyz.com" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  name="username"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <LabelInputContainer>
+                          <Label htmlFor="username">Username</Label>
+                          <LabelInput
+                            placeholder="johndoe"
+                            type="text"
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              debouncedUsername(e.target.value);
+                            }}
+                          />
+                        </LabelInputContainer>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="email"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <LabelInputContainer>
+                          <Label htmlFor="email">Email Address</Label>
+                          <LabelInput
+                            type="text"
+                            placeholder="johndoe@xyz.com"
+                            {...field}
+                          />
+                        </LabelInputContainer>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              name="password"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="password" type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  name="password"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <LabelInputContainer>
+                          <Label htmlFor="password">Password</Label>
+                          <LabelInput
+                            placeholder="••••••••"
+                            type="password"
+                            {...field}
+                          />
+                        </LabelInputContainer>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
 
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                </>
-              ) : (
-                "Signup"
-              )}
-            </Button>
-          </form>
-        </Form>
-        <div className="text-center mt-4">
-          <p>
-            Already a member?{" "}
-            <Link
-              href="/signin"
-              className="text-blue-600 font-bold transition-transform hover:scale-110"
-            >
-              Sign in
-            </Link>
-          </p>
+                <Button
+                  type="submit"
+                  className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] mt-10"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <div className="flex justify-center">
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    </div>
+                  ) : (
+                    "Signup"
+                  )}
+                  <BottomGradient />
+                </Button>
+              </form>
+            </Form>
+            <div className="text-center mt-8 flex gap-2 justify-center">
+              <p>Already a member? </p>
+              <div className="dark:text-blue-400 text-blue-500 font-bold transition hover:scale-110">
+                <Link href="/signin">Sign in</Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
+
+const BottomGradient = () => {
+  return (
+    <>
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+    </>
+  );
+};
+
+const LabelInputContainer = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("flex flex-col space-y-2 w-full", className)}>
+      {children}
+    </div>
+  );
+};
