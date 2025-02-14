@@ -5,10 +5,12 @@ import { User } from "next-auth";
 import { Button } from "./ui/button";
 import ThemeButton from "./ThemeButton";
 import { HoverBorderGradient } from "./ui/hover-border-gradient";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const user: User = session?.user;
+  const currPath = usePathname();
 
   return (
     <nav className="fixed top-0 z-20 min-w-full border-b border-dashed dark:bg-black bg-white">
@@ -24,9 +26,11 @@ const Navbar = () => {
             {session ? (
               <>
                 <span>Welcome, {user.username || user.email}</span>{" "}
-                <Link href="/dashboard">
-                  <Button variant="outline">Dashboard</Button>
-                </Link>
+                {currPath !== "/dashboard" && (
+                  <Link href="/dashboard">
+                    <Button variant="outline">Dashboard</Button>
+                  </Link>
+                )}
                 <Button
                   className="w-full md:w-auto"
                   variant="destructive"

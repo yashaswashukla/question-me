@@ -54,20 +54,32 @@ const LabelInput = React.forwardRef<HTMLInputElement, InputProps>(
           />
           {type === "password" && (
             <button
-              type="button"
               className="focus:outline-none"
+              type="button"
               onClick={() => {
                 setShowPassword(!showPassword);
               }}
             >
-              {type === "password" ? (
-                showPassword ? (
-                  <Eye className="transition " />
-                ) : (
-                  <EyeClosed className="transition ease-in-out" />
-                )
+              {showPassword ? (
+                <motion.div
+                  key="eyeOff"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <EyeClosed />
+                </motion.div>
               ) : (
-                <></>
+                <motion.div
+                  key="eye"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Eye />
+                </motion.div>
               )}
             </button>
           )}

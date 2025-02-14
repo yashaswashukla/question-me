@@ -17,9 +17,10 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { signinSchema } from "@/schemas/signinSchema";
 import { signIn } from "next-auth/react";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { LabelInput } from "@/components/ui/form-input";
+import LabelInputContainer from "@/components/LabelInputContainer";
+import BottomGradient from "@/components/BottomGradient";
 
 export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -146,26 +147,3 @@ export default function Home() {
     </main>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};

@@ -39,7 +39,7 @@ export default function Home() {
   const fetchAcceptMessage = useCallback(async () => {
     setIsSwitchLoading(true);
     try {
-      const response = await axios.get(`/api/accept-messages`);
+      const response = await axios.get(`/api/accept-message`);
       setValue("acceptMessages", response.data.isAcceptingMessage);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -70,7 +70,7 @@ export default function Home() {
         }
       } catch (error) {
         const axiosError = error as AxiosError<ApiResponse>;
-        console.log("Error occured", axiosError);
+        console.log("Error occurred", axiosError);
         toast({
           title: "Error",
           description: axiosError.response?.data.message,
@@ -85,15 +85,14 @@ export default function Home() {
   );
   useEffect(() => {
     if (!session || !session.user) return;
-
-    fetchAcceptMessage();
+    fetchMessage();
     fetchAcceptMessage();
   }, [session, setValue, fetchAcceptMessage, fetchMessage]);
 
   //handle switch change
   const handleSwitchChange = async () => {
     try {
-      const response = await axios.post<ApiResponse>(`/api/accept-messages`, {
+      const response = await axios.post<ApiResponse>(`/api/accept-message`, {
         acceptMessages: !acceptMessages,
       });
       setValue("acceptMessages", !acceptMessages);
@@ -125,7 +124,7 @@ export default function Home() {
 
   return (
     <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
-      <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+      <h1 className="text-4xl font-bold mb-4 mt-20">User Dashboard</h1>
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>
         <div className="flex items-center">
